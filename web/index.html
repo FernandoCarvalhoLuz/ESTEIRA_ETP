@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&family=Unbounded:wght@500..800&display=swap" rel="stylesheet" />
+    <title>ETP · Esteira de Tráfego Pago</title>
+    <meta name="theme-color" content="#090806" />
+    <script>
+      // Aplica o tema salvo antes da renderização para evitar o "piscar" de cores.
+      try {
+        var t = localStorage.getItem('esteira-theme') || 'dark';
+        if (t === 'auto') document.documentElement.removeAttribute('data-theme');
+        else document.documentElement.setAttribute('data-theme', t);
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

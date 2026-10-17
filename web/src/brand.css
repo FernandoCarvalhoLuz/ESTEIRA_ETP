@@ -1,0 +1,163 @@
+/* =====================================================================
+   ETP · camada de marca e movimento
+   Efeitos que dão personalidade ao sistema: grão, brilho dourado, esteiras de luz,
+   cards com borda viva e a barra lateral preta. Tudo respeita data-motion/reduced-motion
+   (as regras globais de styles.css zeram durações).
+   ===================================================================== */
+
+/* ---------- Fundo: grão + grade de pontos dourada no topo ---------- */
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: var(--grain-opacity);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body::after {
+  content: ''; position: fixed; inset: 0 0 auto 0; height: 420px; z-index: 0; pointer-events: none;
+  background-image: radial-gradient(color-mix(in srgb, var(--accent) 22%, transparent) 1px, transparent 1.2px);
+  background-size: 22px 22px; opacity: 0.35;
+  mask-image: radial-gradient(ellipse 70% 100% at 30% 0%, #000 0%, transparent 70%);
+}
+#root { position: relative; z-index: 1; }
+::selection { background: color-mix(in srgb, var(--accent) 35%, transparent); }
+::-webkit-scrollbar-thumb:hover { background-color: color-mix(in srgb, var(--accent) 40%, var(--surface-3)); }
+
+/* ---------- Logo ---------- */
+.logo .logo-belt { animation: logo-belt 0.9s linear infinite; animation-play-state: paused; }
+.logo.live .logo-belt, a:hover > .logo .logo-belt, .brand:hover .logo-belt { animation-play-state: running; }
+@keyframes logo-belt { to { stroke-dashoffset: -9.5; } }
+.brand-mark { width: 34px; height: 34px; filter: drop-shadow(0 6px 16px color-mix(in srgb, var(--accent) 35%, transparent)); transition: transform 0.4s var(--ease-out); }
+.brand:hover .brand-mark { transform: rotate(-4deg) scale(1.05); }
+.brand-word {
+  display: block; font-family: var(--display); font-weight: 750; font-size: 19px; letter-spacing: 0.04em; line-height: 1;
+  background: var(--brand-gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.brand-text small { margin-top: 4px; font-size: 10.5px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- Barra lateral preta (assinatura da marca) ---------- */
+.sidebar.ink { color: var(--text); background: linear-gradient(180deg, #0f0e0b, #080705); border-right: 0; }
+.sidebar.ink::after {
+  content: ''; position: absolute; top: 0; right: 0; bottom: 0; width: 1px; pointer-events: none;
+  background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--accent) 55%, transparent) 18%, rgba(255, 236, 190, 0.08) 55%, transparent);
+}
+.sidebar.ink::before {
+  content: ''; position: absolute; width: 320px; height: 320px; left: -160px; top: -160px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(closest-side, rgba(247, 194, 27, 0.16), transparent); filter: blur(10px);
+}
+.nav-pill { background: linear-gradient(90deg, rgba(247, 194, 27, 0.16), rgba(247, 194, 27, 0.04)); box-shadow: inset 0 0 0 1px rgba(247, 194, 27, 0.22); }
+.nav-pill::before {
+  content: ''; position: absolute; left: -10px; top: 8px; bottom: 8px; width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--brand-gradient); box-shadow: 0 0 12px rgba(247, 194, 27, 0.7);
+}
+.side-nav a svg { transition: transform 0.3s var(--ease-out), color 0.2s; }
+.side-nav a:hover svg { transform: translateX(2px) scale(1.06); color: var(--accent-ink); }
+.side-nav a.active svg { filter: drop-shadow(0 0 6px rgba(247, 194, 27, 0.55)); }
+.nav-badge { background: var(--brand-gradient); color: var(--on-accent); box-shadow: 0 0 12px rgba(247, 194, 27, 0.5); animation: badge-pop 2.4s var(--ease-out) infinite; }
+@keyframes badge-pop { 0%, 70%, 100% { transform: scale(1); } 80% { transform: scale(1.18); } }
+.avatar { box-shadow: 0 0 0 2px #0f0e0b, 0 0 0 3px rgba(247, 194, 27, 0.45); }
+
+/* ---------- Topbar: linha dourada + progresso de rolagem ---------- */
+.topbar { border-bottom-color: transparent; }
+.topbar::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; pointer-events: none;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 40%, transparent), var(--border) 30%, var(--border) 70%, transparent);
+}
+.scroll-progress { position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; transform-origin: left; background: var(--brand-gradient); box-shadow: 0 0 10px var(--accent-glow); z-index: 1; }
+.search-trigger:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--border-strong)); }
+
+/* ---------- Títulos ---------- */
+.page-head h1 .grad {
+  background: linear-gradient(100deg, var(--text) 0%, var(--text) 35%, var(--accent-ink) 50%, var(--text) 65%, var(--text) 100%);
+  background-size: 260% 100%; background-position: 100% 0; -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: title-sheen 2.4s var(--ease-out) 0.2s both;
+}
+@keyframes title-sheen { from { background-position: 100% 0; } to { background-position: 0% 0; } }
+.eyebrow { display: inline-flex; align-items: center; gap: 8px; }
+.eyebrow::before { content: ''; width: 18px; height: 2px; border-radius: 2px; background: var(--brand-gradient); box-shadow: 0 0 8px var(--accent-glow); }
+.section-head h2 svg { box-sizing: content-box; padding: 5px; border-radius: 8px; background: var(--accent-wash); box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 25%, transparent); }
+
+/* ---------- Botões ---------- */
+.btn-primary {
+  background: var(--brand-gradient); overflow: hidden; isolation: isolate;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--accent) 70%, transparent), 0 8px 24px -8px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+.btn-primary:hover { background: var(--brand-gradient); filter: brightness(1.06); box-shadow: 0 0 0 1px var(--accent), 0 12px 32px -6px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.5); }
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; pointer-events: none; transform: translateX(-120%);
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+}
+.btn-primary:hover::after { transform: translateX(120%); transition: transform 0.75s var(--ease-out); }
+.btn:not(.btn-primary):not(.btn-ghost):hover { border-color: color-mix(in srgb, var(--accent) 35%, var(--border-strong)); }
+.switch.on { background: var(--brand-gradient); box-shadow: 0 0 12px var(--accent-glow); }
+.chip-pill { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 0 0 1px color-mix(in srgb, var(--accent) 35%, var(--border-strong)); }
+
+/* ---------- Cards ---------- */
+.card { transition: border-color 0.25s, box-shadow 0.3s, transform 0.3s var(--ease-out); }
+a.card:hover, button.card:hover, .card.lift:hover, .card.spotlight:hover {
+  border-color: color-mix(in srgb, var(--accent) 38%, var(--border));
+  box-shadow: var(--shadow), 0 18px 40px -22px var(--accent-glow);
+}
+a.card:hover, button.card:hover, .card.lift:hover { transform: translateY(-2px); }
+.spotlight::after { background: radial-gradient(380px circle at var(--x) var(--y), color-mix(in srgb, var(--accent) 11%, transparent), transparent 45%); }
+
+/* Borda dourada viva (KPI de destaque, hero) */
+
+.gold-ring {
+  position: absolute; inset: 0; border-radius: inherit; padding: 1px; pointer-events: none; z-index: 2;
+  background: conic-gradient(from var(--beam-angle, 0deg), transparent 0 62%, rgba(255, 231, 160, 0.9) 74%, var(--accent) 82%, transparent 92%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
+  animation: beam-spin 6s linear infinite;
+}
+
+/* Medalha 1º lugar e barras */
+.top-bar i, .rank-fill { background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 45%, transparent), var(--accent-2)); box-shadow: 0 0 8px var(--accent-glow); }
+.beam::before { background: conic-gradient(from var(--beam-angle, 0deg), transparent 0 70%, #ffe7a0 80%, #f7c21b 88%, transparent 96%); }
+
+/* ---------- Esteiras (faixas listradas) em dourado ---------- */
+.belt.moving, .belt:hover {
+  background: repeating-linear-gradient(-45deg, color-mix(in srgb, var(--accent) 22%, var(--surface-2)) 0 10px, var(--surface-2) 10px 20px);
+  background-size: 28.28px 28.28px;
+}
+
+/* ---------- Tabelas ---------- */
+table.data tbody tr:hover td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+
+/* ---------- Skeleton com brilho dourado ---------- */
+.skeleton::after { background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--accent) 7%, transparent), transparent); }
+
+/* ---------- Modais e paleta ---------- */
+.modal, .cmdk { box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--accent) 12%, transparent); }
+.modal-head { background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent); }
+
+/* ---------- Toasts ---------- */
+[data-sonner-toast] { border-radius: 12px !important; }
+[data-sonner-toast][data-type='default'], [data-sonner-toast]:not([data-type]) { border-color: rgba(247, 194, 27, 0.25) !important; }
+
+/* ---------- Login ---------- */
+.login-page { background: #070605; color-scheme: dark; }
+.login-stack { position: relative; z-index: 1; width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; gap: 22px; }
+.login-mark { width: 92px; height: 92px; filter: drop-shadow(0 18px 40px rgba(247, 194, 27, 0.35)); }
+.login-word { text-align: center; }
+.login-word strong {
+  display: block; font-family: var(--display); font-weight: 800; font-size: 44px; letter-spacing: 0.08em; line-height: 1;
+  background: var(--brand-gradient); -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.login-word span { display: block; margin-top: 10px; font-size: 12px; letter-spacing: 0.32em; text-transform: uppercase; color: #aaa491; }
+.login-card { max-width: 420px; }
+.login-card p { text-align: center; }
+.orb.a { background: #f7c21b; opacity: 0.16; }
+.orb.b { background: #ff8a3d; opacity: 0.08; }
+.login-grid { background-image: linear-gradient(rgba(255, 236, 190, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 236, 190, 0.05) 1px, transparent 1px); }
+
+/* Rastros de luz (tráfego) atravessando o fundo */
+.trails { position: absolute; inset: 0; overflow: hidden; pointer-events: none; transform: rotate(-12deg) scale(1.3); }
+.trail {
+  position: absolute; left: 0; height: 2px; border-radius: 2px; width: var(--w, 220px);
+  background: linear-gradient(90deg, transparent, rgba(247, 194, 27, 0.85), #fff5d1);
+  box-shadow: 0 0 12px rgba(247, 194, 27, 0.6);
+  animation: trail var(--d, 4s) linear var(--delay, 0s) infinite; opacity: 0;
+}
+@keyframes trail { 0% { transform: translateX(-30vw); opacity: 0; } 10% { opacity: 1; } 85% { opacity: 1; } 100% { transform: translateX(130vw); opacity: 0; } }
+
+/* ---------- Tela de carregamento ---------- */
+.boot { position: fixed; inset: 0; display: grid; place-items: center; background: #070605; z-index: 200; }
+.boot .logo { width: 64px; height: 64px; }
+.btn { text-decoration: none; }
