@@ -30,6 +30,8 @@ Navegador ──HTTPS──> nginx (Oracle) ──> Node/Express :3010 ──> G
 
 ## Rodar localmente
 
+> Quem vai continuar o projeto: veja o guia completo em [COMO_CONTINUAR.md](COMO_CONTINUAR.md). Não precisa de acesso à VPS.
+
 ```bash
 npm install
 cp .env.example .env            # preencha META_ACCESS_TOKEN
